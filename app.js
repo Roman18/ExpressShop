@@ -4,15 +4,18 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
-const adminRouter = require('./routes/admin');
+const adminRoute = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const rootDir = require('./util/path');
+const pageNotFoundControllers = require('./controllers/404');
 //
 const app = express();
+const port = 3000;
 
 // settings of express server
 
 app.set('views', 'views'); // default endpoint stores a content for user
+app.set('view engine', 'ejs'); //default temple engine
 app.disable('x-powered-by');
 
 //
@@ -20,15 +23,13 @@ app.disable('x-powered-by');
 app.use(bodyParser.urlencoded({extended: false})); // to parse body
 app.use(express.static(path.join(rootDir, 'public'))); // to add static files (css, js)
 
-app.use('/admin', adminRouter);
+app.use('/admin', adminRoute);
 app.use(shopRouter);
 
-app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(rootDir, 'views', '404.html'));
-});
+app.use(pageNotFoundControllers.getNotFoundPage);
 
-app.listen(3000, (error) => {
+app.listen(port, (error) => {
     if(error === undefined){
-        console.log('The server is running on port 3000!');
+        console.log(`The server is running on port ${port}!`);
     }
 });
