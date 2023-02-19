@@ -15,7 +15,7 @@ const port = 3000;
 // settings of express server
 
 app.set('views', 'views'); // default endpoint stores a content for user
-app.set('view engine', 'ejs'); //default temple engine
+app.set('view engine', 'ejs'); //default template engine
 app.disable('x-powered-by');
 
 //
